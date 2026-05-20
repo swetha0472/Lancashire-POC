@@ -1,63 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enquiry Form</title>
-    
-    <script src="https://creationtechnology4.my.site.com/LearningPortal/lightning/lightning.out.js"></script>
-    
-    <style>
-        body { 
-            margin: 0; 
-            padding: 20px; 
-            font-family: Arial, sans-serif; 
-            background: #f4f6f9;
-        }
-        #lwcLightning { 
-            max-width: 900px; 
-            margin: 0 auto; 
-            min-height: 700px; 
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #1e3a8a;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Enquiry Form</title>
+  <link rel="icon" href="data:,">
+  <script src="https://creationtechnology4.my.salesforce-sites.com/lightning/lightning.out.js"></script>
 </head>
 <body>
-    <h1>Learning Program Enquiry</h1>
-    <div id="lwcLightning">Loading form...</div>
+  <div id="container"></div>
 
-    <script>
-        $Lightning.use(
-            "c:LPBundle", 
-            function() {
-                console.log("✅ Lightning Out Initialized");
-                $Lightning.createComponent(
-                    "c:learningProgramFlowEmbed", 
-                    {}, 
-                    "lwcLightning",
-                    function(cmp) {
-                        console.log("✅ Component Loaded Successfully!");
-                    }
-                );
-            },
-            function(error) {
-                console.error("❌ Lightning Out Error:", error);
-                document.getElementById("lwcLightning").innerHTML = 
-                    `<p style="color:red; padding:30px; text-align:center;">
-                        Unable to load the form.<br><br>
-                        Please check browser console (F12) for details.
-                     </p>`;
-            },
-            "https://creationtechnology4.my.site.com/LearningPortal"
+  <script>
+    $Lightning.use(
+      "c:learningProgramOutApp",
+      function() {
+        $Lightning.createComponent(
+          "c:learningProgramForm",
+          {},
+          "container",
+          function(cmp) {
+            console.log("Component ready:", cmp);
+          }
         );
-    </script>
-    
+      },
+      "https://creationtechnology4.my.salesforce-sites.com"
+    );
+  </script>
 </body>
 </html>
