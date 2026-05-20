@@ -1,29 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Enquiry Form</title>
-  <link rel="icon" href="data:,">
-  <script src="https://creationtechnology4.my.salesforce-sites.com/lightning/lightning.out.js"></script>
+    <script src="https://creationtechnology4.my.salesforce-sites.com/lightning/lightning.out.js"></script>
 </head>
 <body>
-  <div id="container"></div>
-
-  <script>
-    $Lightning.use(
-      "c:learningProgramOutApp",
-      function() {
-        $Lightning.createComponent(
-          "c:learningProgramForm",
-          {},
-          "container",
-          function(cmp) {
-            console.log("Component ready:", cmp);
-          }
-        );
-      },
-      "https://creationtechnology4.my.salesforce-sites.com"
-    );
-  </script>
+    <div id="lwcLightning"></div>
 </body>
+<script>
+    $Lightning.use(
+        "c:LPBundle",
+        () => {
+            $Lightning.createComponent(
+                "c:learningProgramFlowEmbed",
+                {},
+                "lwcLightning",
+                (cmp) => {
+                    console.log("LWC Loaded!");
+                }
+            );
+        },
+        "https://creationtechnology4.my.salesforce-sites.com"
+    );
+</script>
 </html>
