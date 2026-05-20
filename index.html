@@ -5,53 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <script src="https://creationtechnology4.my.site.com/lightning/lightning.out.js"></script>
-    
-    <style>
-        body { 
-            margin: 0; 
-            padding: 20px; 
-            font-family: Arial, sans-serif; 
-            background: #f8f9fa;
-        }
-        #lwcLightning { 
-            max-width: 900px; 
-            margin: 0 auto; 
-            min-height: 700px; 
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-    </style>
 </head>
 <body>
     <div id="lwcLightning">Loading form...</div>
 
-    <script>
-        $Lightning.use(
-            "c:LPBundle", 
-            function() {
-                console.log("Lightning Out initialized");
-                $Lightning.createComponent(
-                    "c:learningProgramFlowEmbed", 
-                    {}, 
-                    "lwcLightning",
-                    function(cmp) {
-                        console.log("✅ Component loaded successfully!");
-                    }
-                );
-            },
-            "https://creationtechnology4.my.site.com",
-            function(error) {
-                console.error("Lightning Out Error:", error);
-                document.getElementById("lwcLightning").innerHTML = 
-                    `<p style="color:red; padding:20px;">
-                        Failed to load form.<br><br>
-                        Please check browser console (F12) for errors.
-                     </p>`;
-            },
-            "https://creationtechnology4.my.site.com"
-        );
-    </script>
+<script>
+	$Lightning.use(
+		"c:AuraApp",
+		() => {
+			$Lightning.createComponent(
+				"c:callFlowFromButton",
+				{ msg: "It works (LWC)!" },
+				"lwcLightning",
+				(cmp) => {
+					console.log("LWC component was created");
+				}
+			);
+		},
+		"https://creationtechnology4.my.site.com"
+	);
+</script>
+
 </body>
 </html>
