@@ -5,20 +5,8 @@
 <body>
     <div id="lwcLightning"></div>
 </body>
-<script>
-    $Lightning.use(
-        "c:LPBundle",
-        () => {
-            $Lightning.createComponent(
-                "c:learningProgramFlowEmbed",
-                {},
-                "lwcLightning",
-                (cmp) => {
-                    console.log("LWC Loaded!");
-                }
-            );
-        },
-        "https://creationtechnology4.my.site.com"
-    );
-</script>
+<script type="text/javascript" async="" src="https://creationtechnology4.my.salesforce.com/lightning/lightning.out.latest/index.iife.prod.js"></script>
+
+<lightning-out-application app-id="1UsdN00000025bVSAQ" components="c-learning-program-flow-embed"></lightning-out-application>
+<c-learning-program-flow-embed></c-learning-program-flow-embed>
 </html>
