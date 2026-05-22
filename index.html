@@ -1,21 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8" />
-    <title>Lightning Out 2.0 Demo</title>
-    <!-- Script URL provided in Lightning Out 2.0 App Manager -->
-    <script src="https://creationtechnology4.my.site.com/lightning/lightning.out.2.0.js"></script>
+    <script src="https://creationtechnology4.my.site.com/LearningPortal/lightning/lightning.out.js"></script>
 </head>
 <body>
-    <script type="text/javascript" async="" src="https://creationtechnology4.my.salesforce.com/lightning/lightning.out.latest/index.iife.prod.js"></script>
-
-<lightning-out-application app-id="1UsdN00000025bVSAQ" components="c-learning-program-flow-embed"></lightning-out-application>
-<c-learning-program-flow-embed></c-learning-program-flow-embed>
-<script>
-        function onLightningReady(app) {
-            console.log('Lightning Out 2.0 app is ready', app);
-            // Communicate with embedded components via the app object
-        }
-    </script>
+    <div id="lwcLightning"></div>
 </body>
+<script>
+    $Lightning.use(
+        "c:LPBundle",
+        () => {
+            $Lightning.createComponent(
+                "c:learningProgramFlowEmbed",
+                {},
+                "lwcLightning",
+                (cmp) => {
+                    console.log("LWC Loaded!");
+                }
+            );
+        },
+        "https://creationtechnology4.my.site.com/LearningPortal"
+    );
+</script>
 </html>
