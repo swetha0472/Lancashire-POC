@@ -1,88 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LWC Embedded via Lightning Out 2.0</title>
-
-    <!-- Lightning Out 2.0 Script -->
-    <script type="text/javascript" 
-            src="https://creationtechnology4.my.salesforce.com/lightning/lightning.out.latest/index.iife.prod.js">
-    </script>
-
-    <style>
-        body { font-family: Arial, sans-serif; padding: 20px; }
-        #container { margin-top: 20px; min-height: 700px; border: 1px solid #ddd; }
-    </style>
+    <script src="https://creationtechnology4.my.site.com/LearningPortal/lightning/lightning.out.js"></script>
 </head>
 <body>
-    <h1>Salesforce LWC via Lightning Out 2.0</h1>
-    <button onclick="startLogin()">Login & Load LWC</button>
-
-    <div id="container"></div>
-
-    <script>
-        let frontdoorUrl = null;
-
-        // Step 1: Start OAuth Login
-        async function startLogin() {
-            const clientId = '3MVG9GBhY6wQjl2uGwI77CbrWiaXHSIsEfJdRW0K8NKqXokcR5317cnVsmmOqOtmE.3LloloZuMqLmDUY9Ms0';
-            const redirectUri = 'https://fascinating-youtiao-eda4a9.netlify.app/callback';
-            const loginUrl = 'https://creationtechnology4.my.salesforce.com';
-
-            const authUrl = `${loginUrl}/services/oauth2/authorize?` +
-                `response_type=code` +
-                `&client_id=${clientId}` +
-                `&redirect_uri=${encodeURIComponent(redirectUri)}` +
-                `&scope=api+web+lightning`;
-
-            window.location.href = authUrl;
-        }
-
-        // Step 2: Handle Callback from Salesforce
-        async function handleCallback() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const code = urlParams.get('code');
-
-            if (!code) return;
-
-            try {
-                const netlifyFunctionUrl = 'https://fascinating-youtiao-eda4a9.netlify.app/.netlify/functions/get-frontdoor';
-
-                const response = await fetch(`${netlifyFunctionUrl}?code=${code}`);
-                const data = await response.json();
-
-                if (data.frontdoorUrl) {
-                    frontdoorUrl = data.frontdoorUrl;
-                    loadLightningOut();
-                } else {
-                    alert("Failed to get frontdoor URL. Check Netlify function.");
-                }
-            } catch (err) {
-                console.error(err);
-                alert("Error connecting to backend: " + err.message);
-            }
-        }
-
-        // Step 3: Initialize Lightning Out 2.0
-        function loadLightningOut() {
-            const container = document.getElementById('container');
-
-            // Create lightning-out-application element
-            const loApp = document.createElement('lightning-out-application');
-            loApp.setAttribute('app-id', '1UsdN00000025bVSAQ');
-            loApp.setAttribute('components', 'c-learning-program-flow-embed');
-            loApp.setAttribute('frontdoor-url', frontdoorUrl);
-
-            container.appendChild(loApp);
-
-            console.log("✅ Lightning Out 2.0 initialized successfully!");
-        }
-
-        // Auto-check if this is a callback page
-        if (window.location.search.includes('code=')) {
-            handleCallback();
-        }
-    </script>
+    <div id="lwcLightning"></div>
 </body>
+<script>
+    $Lightning.use(
+        "c:LPBundle",
+        () => {
+            $Lightning.createComponent(
+                "c:learningProgramFlowEmbed",
+                {},
+                "lwcLightning",
+                (cmp) => {
+                    console.log("LWC Loaded!");
+                }
+            );
+        },
+        "https://creationtechnology4.my.site.com/LearningPortal"
+    );
+</script>
 </html>
