@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lancashire POC - Lightning Out</title>
     
+    <!-- 1. The Lightning Out Library -->
     <script src="https://lancashiredev--dev.sandbox.my.site.com/futurestudents/lightning/lightning.out.js"></script>
 
     <style>
@@ -30,6 +31,7 @@
 <body>
     <div class="container">
         <h1>Lancashire Future Students Portal</h1>
+        <!-- 2. Target Container matching the JS target ID below -->
         <div id="lwcLightning">
             <div class="loading">Loading Enquiry Form...</div>
         </div>
@@ -37,45 +39,23 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            $Lightning.use("c:LightningOutFlowEmbed", function() {
-    $Lightning.createComponent("lightning:flow",
-        {}, // Pass flow input variables here if needed
-        "flowContainer", // The ID of the HTML div where the flow will load
-        function(component) {
-            // Start your specific interview flow by its API Name
-            component.startFlow("EnquiryFormDemo");
-        }
-    );
-});
+            // 3. Corrected parenthesis, brackets, and target container ID
+            $Lightning.use(
+                "c:LightningOutFlowEmbed", 
+                function() {
+                    $Lightning.createComponent(
+                        "lightning:flow",
+                        {}, 
+                        "lwcLightning", // Changed from "flowContainer" to match your actual HTML ID
+                        function(component) {
+                            console.log("Flow wrapper component initialized successfully.");
+                            component.startFlow("EnquiryFormDemo");
+                        }
+                    );
                 },
-                "https://lancashiredev--dev.sandbox.my.site.com/futurestudents"
+                "https://lancashiredev--dev.sandbox.my.site.com/futurestudents" // Correctly inside the .use parameters
             );
         });
     </script>
 </body>
 </html>
-
-<!-- <html>
-<head>
-    <script src="https://creationtechnology4.my.site.com/LearningPortal/lightning/lightning.out.js"></script>
-</head>
-<body>
-    <div id="lwcLightning"></div>
-</body>
-<script>
-    $Lightning.use(
-        "c:LPBundle",
-        () => {
-            $Lightning.createComponent(
-                "c:learningProgramFlowEmbed",
-                {},
-                "lwcLightning",
-                (cmp) => {
-                    console.log("LWC Loaded!");
-                }
-            );
-        },
-        "https://creationtechnology4.my.site.com/LearningPortal"
-    );
-</script>
-</html> -->
