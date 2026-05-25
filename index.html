@@ -37,20 +37,16 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            $Lightning.use(
-                "c:LightningOutFlowEmbed",
-                function() {
-                    $Lightning.createComponent(
-                        "c:LightningOutFlowEmbed",
-                        {
-                            flowApiName: "EnquiryFormDemo"   // Your Flow API Name
-                            // flowVariables: [ { name: "varName", type: "String", value: "Test" } ]
-                        },
-                        "lwcLightning",
-                        function(cmp) {
-                            console.log("✅ Flow wrapper component loaded successfully");
-                        }
-                    );
+            $Lightning.use("c:LightningOutFlowEmbed", function() {
+    $Lightning.createComponent("lightning:flow",
+        {}, // Pass flow input variables here if needed
+        "flowContainer", // The ID of the HTML div where the flow will load
+        function(component) {
+            // Start your specific interview flow by its API Name
+            component.startFlow("EnquiryFormDemo");
+        }
+    );
+});
                 },
                 "https://lancashiredev--dev.sandbox.my.site.com/futurestudents"
             );
