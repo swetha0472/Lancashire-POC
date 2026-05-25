@@ -1,0 +1,25 @@
+<html>
+<head>
+<script  src="https://lancashiredev--dev.sandbox.my.site.com/futurestudents/lightning/lightning.out.js">
+</script>
+</head>
+<body>
+	<div id="lwcLightning"></div>
+</body>
+<script>
+	$Lightning.use(
+		"c:LightningOutFlowEmbed",
+		() => {
+			$Lightning.createComponent(
+				"c:EnquiryFormDemo",
+				{ msg: "It works (LWC)!" },
+				"lwcLightning",
+				(cmp) => {
+					console.log("LWC component was created");
+				}
+			);
+		},
+		"https://lancashiredev--dev.sandbox.my.site.com/futurestudents"
+	);
+</script>
+</html>
