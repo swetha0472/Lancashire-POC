@@ -6,82 +6,55 @@
     <title>Lancashire POC - Lightning Out</title>
     
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-                        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
         .container { max-width: 1200px; margin: 0 auto; }
-        h1 { color: #0070d2; text-align: center; margin-bottom: 30px; }
-        #lwcLightning {
-            background-color: white;
-            min-height: 700px;
-            border-radius: 8px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
-        }
-        .loading { 
-            text-align: center; 
-            padding: 80px 20px; 
-            color: #666; 
-            font-size: 18px;
-        }
+        h1 { color: #0070d2; text-align: center; }
+        #lwcLightning { background: white; min-height: 700px; border-radius: 8px; padding: 10px; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Lancashire Future Students Portal</h1>
         <div id="lwcLightning">
-            <div class="loading">Loading Flow...</div>
+            <div style="text-align:center; padding:80px;">Loading Flow...</div>
         </div>
     </div>
 
     <script>
-        let config = null;
-
-        async function loadConfig() {
+        async function loadLightningOut() {
             try {
                 const response = await fetch('https://creationtechnology4.my.site.com/services/apexrest/lo/config');
-                config = await response.json();
+                const config = await response.json();
 
-                console.log("✅ Config loaded:", config);
-
-                // Dynamically load Lightning Out
                 const script = document.createElement('script');
                 script.src = config.fullSiteUrl + '/lightning/lightning.out.js';
                 script.async = true;
                 document.head.appendChild(script);
 
-                script.onload = () => initializeLightningOut();
-            } catch (error) {
-                console.error("Config load failed:", error);
+                script.onload = () => {
+                    $Lightning.use(
+                        config.dependencyApp,
+                        function() {
+                            $Lightning.createComponent(
+                                config.componentName,
+                                { flowName: config.flowName },
+                                "lwcLightning",
+                                function() {
+                                    console.log("✅ LWC Loaded Successfully");
+                                }
+                            );
+                        },
+                        config.fullSiteUrl
+                    );
+                };
+            } catch (err) {
+                console.error(err);
                 document.getElementById('lwcLightning').innerHTML = 
-                    '<p style="color:red; text-align:center; padding:50px;">Error loading configuration.</p>';
+                    '<p style="color:red; text-align:center;">CORS or Config Error. Check Salesforce settings.</p>';
             }
         }
 
-        function initializeLightningOut() {
-            $Lightning.use(
-                config.dependencyApp,
-                function() {
-                    $Lightning.createComponent(
-                        config.componentName,        // Your LWC that contains the flow
-                        {
-                            flowName: config.flowName   // Passing Flow Name to LWC
-                        },
-                        "lwcLightning",
-                        function(component) {
-                            console.log("✅ LWC with Flow Loaded Successfully!");
-                        }
-                    );
-                },
-                config.fullSiteUrl
-            );
-        }
-
-        // Start
-        loadConfig();
+        loadLightningOut();
     </script>
 </body>
 </html>
