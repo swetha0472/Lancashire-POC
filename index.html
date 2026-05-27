@@ -3,55 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lancashire POC - Lightning Out</title>
-    
-    <!-- 1. The Lightning Out Library -->
-    <script src="https://lancashiredev--dev.sandbox.my.site.com/futurestudents/lightning/lightning.out.js"></script>
-
+    <title>Lancashire POC</title>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-                        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
         .container { max-width: 1200px; margin: 0 auto; }
         h1 { color: #0070d2; text-align: center; }
-        #lwcLightning {
-            background-color: white;
-        }
-        .loading { text-align: center; }
+        #lwcLightning { background: white; min-height: 700px; border-radius: 8px; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Lancashire Future Students Portal</h1>
-        <!-- 2. Target Container matching the JS target ID below -->
-        <div id="lwcLightning">
-            <div class="loading"></div>
-        </div>
+        <button onclick="startLogin()" style="padding:12px 24px; font-size:16px;">Login to Salesforce</button>
+        <div id="lwcLightning" style="margin-top:20px;"></div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // 3. Corrected parenthesis, brackets, and target container ID
-            $Lightning.use(
-                "c:LightningOutFlowEmbed", 
-                function() {
-                    $Lightning.createComponent(
-                        "lightning:flow",
-                        {}, 
-                        "lwcLightning", // Changed from "flowContainer" to match your actual HTML ID
-                        function(component) {
-                            console.log("Flow wrapper component initialized successfully.");
-                            component.startFlow("EnquiryFormDemo");
-                        }
-                    );
-                },
-                "https://lancashiredev--dev.sandbox.my.site.com/futurestudents" // Correctly inside the .use parameters
-            );
-        });
+        async function startLogin() {
+            const clientId = '3MVG9GBhY6wQjl2uGwI77CbrWiaXHSIsEfJdRW0K8NKqXokcR5317cnVsmmOqOtmE.3LloloZuMqLmDUY9Ms0';
+            const redirectUri = 'https://your-vercel-app.vercel.app/api/frontdoor'; // Change this
+            const loginUrl = 'https://creationtechnology4.my.salesforce.com';
+
+            const authUrl = `${loginUrl}/services/oauth2/authorize?` +
+                `response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}` +
+                `&scope=api+web+lightning`;
+
+            window.location.href = authUrl;
+        }
+
+        async function handleCallback() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+
+            if (code) {
+                const response = await fetch(`/api/frontdoor?code=${code}`);
+                const data = await response.json();
+
+                if (data.frontdoorUrl) {
+                    initializeLightningOut(data.frontdoorUrl);
+                }
+            }
+        }
+
+        function initializeLightningOut(frontdoorUrl) {
+            const container = document.getElementById('lwcLightning');
+
+            const loApp = document.createElement('lightning-out-application');
+            loApp.setAttribute('app-id', '1UsdN00000025bVSAQ');           // Your App ID
+            loApp.setAttribute('components', 'c-learning-program-flow-embed');
+            loApp.setAttribute('frontdoor-url', frontdoorUrl);
+
+            container.appendChild(loApp);
+        }
+
+        // Check for callback
+        if (window.location.search.includes('code=')) {
+            handleCallback();
+        }
     </script>
 </body>
 </html>
